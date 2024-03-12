@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Button from "./Button"; 
 // import AddPoint from "./AddPoint";
 import QueryPoint from "./QueryPoint";
-import MapComponent from "../components/Map"; // Harita bileşenini içeri aktarın
+import MapComponent from "../components/Map"; 
 
 function Navbar() {
   // const [modalShow, setModalShow] = useState(false);
@@ -10,7 +10,7 @@ function Navbar() {
 
   const activateMapInteraction = () => {
     if (MapComponent.activateInteraction) {
-      MapComponent.activateInteraction(); // Harita bileşenindeki etkileşimi aktif et
+      MapComponent.activateInteraction(); 
     } else {
       console.error("MapComponent.activateInteraction fonksiyonu bulunamadı!");
     }
@@ -25,7 +25,7 @@ function Navbar() {
             <li className="nav-item mx-3">
                 <Button
                   buttontext="Add Point"
-                  buttonclick={activateMapInteraction} // activateMapInteraction fonksiyonunu tetikleyin
+                  buttonclick={activateMapInteraction} 
                 />
               </li>
               <li className="nav-item">

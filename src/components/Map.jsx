@@ -16,7 +16,7 @@ const MapComponent = () => {
   const mapInstance = useRef(null);
 
   useEffect(() => {
-    if (!mapRef.current) return; // mapRef henüz oluşturulmadıysa, işlem yapma
+    if (!mapRef.current) return;
 
     const source = new XYZ({
       url: 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png'
@@ -79,7 +79,7 @@ const MapComponent = () => {
         map.setTarget(null);
       }
     };
-  }, []); // useEffect sadece bir kez çalışır
+  }, []); 
 
   return (
     <div ref={mapRef} className="map" style={{ width: '100%', height: '91vh' }}></div>
