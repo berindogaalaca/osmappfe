@@ -1,9 +1,15 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
+
 
 const AddPoint = ({ show, onHide, coordinate }) => {
+  const [ , setShowModal] = useState(false);
+
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
   const [latitude, setLatitude] = useState('');
@@ -17,13 +23,37 @@ const AddPoint = ({ show, onHide, coordinate }) => {
     }
   }, [coordinate]);
 
-  const handleSave = () => {
-    console.log('Name:', name);
-    console.log('Number:', number);
-    console.log('Latitude:', latitude);
-    console.log('Longitude:', longitude);
-
+  const handleClose = () => {
+    setShowModal(false);
     onHide && onHide();
+  };
+
+  const handleSave = () => {
+    if (!name || !number || !latitude || !longitude) {
+      toast.error('You must fill in all fields', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
+      return;
+    }
+
+    // Burada kaydetme işlemlerini yapabilirsiniz
+
+    toast.success('Add Point is Successfully', {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,className: "toast-message",
+      });
+    handleClose();
   };
 
   return (
@@ -81,7 +111,8 @@ const AddPoint = ({ show, onHide, coordinate }) => {
       </Modal.Body>
       <Modal.Footer>
         <Button className='bg-black border-0' onClick={handleSave}>Save</Button>
-        <Button className='bg-black border-0' onClick={onHide}>Close</Button>
+        <ToastContainer/>
+        <Button className='bg-black border-0' onClick={handleClose}>Close</Button>
       </Modal.Footer>
     </Modal>
   );
