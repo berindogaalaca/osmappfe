@@ -1,4 +1,5 @@
-import React, { useRef, useEffect } from 'react';
+// MapComponent.js
+import React, { useRef, useEffect, useState } from 'react';
 import 'ol/ol.css';
 import Map from 'ol/Map';
 import View from 'ol/View';
@@ -9,11 +10,13 @@ import Draw from 'ol/interaction/Draw';
 import { fromLonLat } from 'ol/proj';
 import { Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
+import AddPoint from "./AddPoint";
 
 const MapComponent = () => {
   const mapRef = useRef(null);
   const drawInteraction = useRef(null);
   const mapInstance = useRef(null);
+  const [showAddPointModal, setShowAddPointModal] = useState(false);
 
   useEffect(() => {
     if (!mapRef.current) return;
@@ -57,12 +60,15 @@ const MapComponent = () => {
 
     drawInteraction.current = new Draw({
       source: vectorLayer.getSource(),
-      type: 'Point', 
+      type: 'Point',
     });
 
     const activateInteraction = () => {
       if (drawInteraction.current) {
         map.addInteraction(drawInteraction.current);
+        drawInteraction.current.on('drawend', () => {
+          setShowAddPointModal(true);
+        });
       } else {
         console.error("Etkileşim henüz oluşturulmadı.");
       }
@@ -79,10 +85,13 @@ const MapComponent = () => {
         map.setTarget(null);
       }
     };
-  }, []); 
+  }, []);
 
   return (
-    <div ref={mapRef} className="map" style={{ width: '100%', height: '91vh' }}></div>
+    <>
+      <div ref={mapRef} className="map" style={{ width: '100%', height: '91vh' }}></div>
+      <AddPoint show={showAddPointModal} onHide={() => setShowAddPointModal(false)} />
+    </>
   );
 };
 

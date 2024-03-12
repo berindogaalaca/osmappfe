@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import Button from "./Button"; 
-// import AddPoint from "./AddPoint";
+import AddPoint from "./AddPoint";
 import QueryPoint from "./QueryPoint";
 import MapComponent from "../components/Map"; 
 
 function Navbar() {
-  // const [modalShow, setModalShow] = useState(false);
+  const [modalShow, setModalShow] = useState(false);
   const [modalShowQuery, setModalShowQuery] = useState(false);
 
   const activateMapInteraction = () => {
@@ -36,6 +36,7 @@ function Navbar() {
           </div>
         </div>
       </nav>
+      <AddPoint show={modalShow} onHide={() => setModalShow(false)} /> 
     </div>
   );
 }
