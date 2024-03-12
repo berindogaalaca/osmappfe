@@ -17,6 +17,7 @@ const MapComponent = () => {
   const drawInteraction = useRef(null);
   const mapInstance = useRef(null);
   const [showAddPointModal, setShowAddPointModal] = useState(false);
+  const [coordinate, setCoordinate] = useState(null);
 
   useEffect(() => {
     if (!mapRef.current) return;
@@ -66,7 +67,9 @@ const MapComponent = () => {
     const activateInteraction = () => {
       if (drawInteraction.current) {
         map.addInteraction(drawInteraction.current);
-        drawInteraction.current.on('drawend', () => {
+        drawInteraction.current.on('drawend', (e) => {
+          const coords = e.feature.getGeometry().getCoordinates();
+          setCoordinate(coords);
           setShowAddPointModal(true);
         });
       } else {
@@ -90,7 +93,7 @@ const MapComponent = () => {
   return (
     <>
       <div ref={mapRef} className="map" style={{ width: '100%', height: '91vh' }}></div>
-      <AddPoint show={showAddPointModal} onHide={() => setShowAddPointModal(false)} />
+      <AddPoint show={showAddPointModal} onHide={() => setShowAddPointModal(false)} coordinate={coordinate} />
     </>
   );
 };

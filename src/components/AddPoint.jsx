@@ -1,23 +1,28 @@
-// AddPoint.js
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 
-const AddPoint = ({ show, onHide }) => {
+const AddPoint = ({ show, onHide, coordinate }) => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
   const [latitude, setLatitude] = useState('');
   const [longitude, setLongitude] = useState('');
 
+  useEffect(() => {
+    if (coordinate) {
+      const [lon, lat] = coordinate;
+      setLatitude(lat);
+      setLongitude(lon);
+    }
+  }, [coordinate]);
+
   const handleSave = () => {
-    // Save logic
     console.log('Name:', name);
     console.log('Number:', number);
     console.log('Latitude:', latitude);
     console.log('Longitude:', longitude);
 
-    // Close modal
     onHide && onHide();
   };
 
@@ -61,6 +66,7 @@ const AddPoint = ({ show, onHide }) => {
               placeholder="Add Your Latitude"
               value={latitude}
               onChange={(e) => setLatitude(e.target.value)}
+              readOnly
             />
             <Form.Label>Longitude</Form.Label>
             <Form.Control
@@ -68,6 +74,7 @@ const AddPoint = ({ show, onHide }) => {
               placeholder="Add Your Longitude"
               value={longitude}
               onChange={(e) => setLongitude(e.target.value)}
+              readOnly 
             />
           </Form.Group>
         </Form>

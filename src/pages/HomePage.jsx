@@ -8,10 +8,7 @@ const HomePage = () => {
 
   return (
     <div>
-      <Navbar
-        
-      />
-      
+      <Navbar/>
       <Map />
     </div>
   );
