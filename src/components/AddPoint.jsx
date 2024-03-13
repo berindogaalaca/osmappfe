@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
 
 
-const AddPoint = ({ show, onHide, coordinate }) => {
+const AddPoint = ({ show, onHide, coordinate, deactivateInteraction }) => {
   const [ , setShowModal] = useState(false);
 
   const [name, setName] = useState('');
@@ -26,6 +26,7 @@ const AddPoint = ({ show, onHide, coordinate }) => {
   const handleClose = () => {
     setShowModal(false);
     onHide && onHide();
+    deactivateInteraction();
   };
 
   const handleSave = () => {
@@ -42,7 +43,7 @@ const AddPoint = ({ show, onHide, coordinate }) => {
       return;
     }
 
-    // Burada kaydetme işlemlerini yapabilirsiniz
+    // Burada kaydetme işlemleri
 
     toast.success('Add Point is Successfully', {
       position: "top-right",

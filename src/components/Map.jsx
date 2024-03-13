@@ -1,11 +1,10 @@
-// MapComponent.js
 import React, { useRef, useEffect, useState } from 'react';
 import 'ol/ol.css';
 import Map from 'ol/Map';
 import View from 'ol/View';
 import TileLayer from 'ol/layer/Tile';
 import XYZ from 'ol/source/XYZ';
-import { Circle as CircleStyle, Fill, Stroke, Style } from 'ol/style';
+import { Circle as CircleStyle, Fill, Stroke, Style, Icon } from 'ol/style'; 
 import Draw from 'ol/interaction/Draw';
 import { fromLonLat } from 'ol/proj';
 import { Vector as VectorLayer } from 'ol/layer';
@@ -45,6 +44,14 @@ const MapComponent = () => {
       }),
     });
 
+    const locationIconStyle = new Style({
+      image: new Icon({
+        src: "locationIcon.svg",
+        imgSize: [32, 32], 
+        anchor: [0.5, 1],
+      }),
+    });
+
     const map = new Map({
       target: mapRef.current,
       layers: [
@@ -67,8 +74,10 @@ const MapComponent = () => {
     const activateInteraction = () => {
       if (drawInteraction.current) {
         map.addInteraction(drawInteraction.current);
-        drawInteraction.current.on('drawend', (e) => {
-          const coords = e.feature.getGeometry().getCoordinates();
+        drawInteraction.current.on('drawend', (event) => {
+          const feature = event.feature;
+          feature.setStyle(locationIconStyle); 
+          const coords = feature.getGeometry().getCoordinates();
           setCoordinate(coords);
           setShowAddPointModal(true);
         });
@@ -76,7 +85,14 @@ const MapComponent = () => {
         console.error("Etkileşim henüz oluşturulmadı.");
       }
     };
+
+    const deactivateInteraction = () => {
+      if (drawInteraction.current) {
+        map.removeInteraction(drawInteraction.current);
+      }
+    };
     MapComponent.activateInteraction = activateInteraction;
+    MapComponent.deactivateInteraction = deactivateInteraction;
 
     mapInstance.current = map;
 
@@ -93,7 +109,7 @@ const MapComponent = () => {
   return (
     <>
       <div ref={mapRef} className="map" style={{ width: '100%', height: '91vh' }}></div>
-      <AddPoint show={showAddPointModal} onHide={() => setShowAddPointModal(false)} coordinate={coordinate} />
+      <AddPoint show={showAddPointModal} onHide={() => setShowAddPointModal(false)} coordinate={coordinate} deactivateInteraction={MapComponent.deactivateInteraction}/>
     </>
   );
 };
